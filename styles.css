@@ -1,0 +1,280 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 100%;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: clamp(24px, 5vw, 36px);
+}
+
+.board {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    background-color: #333;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.cell {
+    width: clamp(60px, 20vw, 100px);
+    height: clamp(60px, 20vw, 100px);
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(24px, 8vw, 40px);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cell:hover {
+    background-color: #f0f0f0;
+}
+
+.status {
+    margin: 20px 0;
+    font-size: clamp(18px, 4vw, 24px);
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+.restart-btn {
+    padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
+    font-size: clamp(14px, 2vw, 16px);
+    cursor: pointer;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.restart-btn:hover {
+    background-color: #555;
+}
+
+/* Adding X and O colors */
+.cell.x {
+    color: #e74c3c;
+}
+
+.cell.o {
+    color: #3498db;
+}
+
+/* Winning animation */
+@keyframes winner {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.winner {
+    animation: winner 0.5s ease-in-out;
+}
+
+.game-modes {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mode-btn {
+    padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
+    font-size: clamp(14px, 2vw, 16px);
+    cursor: pointer;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.mode-btn:hover {
+    background-color: #555;
+}
+
+.mode-btn.active {
+    background-color: #2ecc71;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal.active {
+    display: flex;
+    opacity: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: clamp(20px, 5vw, 40px);
+    border-radius: 15px;
+    text-align: center;
+    transform: scale(0.7);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    margin: 20px;
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+.winner-text {
+    font-size: clamp(24px, 6vw, 32px);
+    color: #2ecc71;
+    margin-bottom: 20px;
+}
+
+.trophy {
+    font-size: clamp(50px, 15vw, 80px);
+    margin: 20px 0;
+    animation: bounce 1s infinite;
+}
+
+.play-again-btn {
+    padding: clamp(8px, 2vw, 12px) clamp(15px, 3vw, 24px);
+    font-size: clamp(14px, 3vw, 18px);
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.play-again-btn:hover {
+    background-color: #27ae60;
+}
+
+/* Animations */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100vh) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+/* Winning Line Styles */
+.winning-line {
+    position: absolute;
+    transition: width 0.5s ease-in-out;
+    z-index: 1;
+    transform-origin: left;
+}
+
+.winning-line.player1 {
+    background-color: #e74c3c; /* X color (red) */
+}
+
+.winning-line.player2 {
+    background-color: #3498db; /* O color (blue) */
+}
+
+/* Media Queries */
+@media screen and (max-width: 480px) {
+    .game-modes {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .mode-btn {
+        width: 100%;
+    }
+
+    .restart-btn {
+        width: 100%;
+    }
+}
+
+/* Hover effects only for devices that support hover */
+@media (hover: hover) {
+    .mode-btn:hover {
+        background-color: #555;
+    }
+
+    .cell:hover {
+        background-color: #f0f0f0;
+    }
+
+    .restart-btn:hover {
+        background-color: #555;
+    }
+
+    .play-again-btn:hover {
+        background-color: #27ae60;
+    }
+}
+
+/* Landscape mode adjustments */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+    .game-container {
+        padding: 10px;
+    }
+
+    h1 {
+        margin-bottom: 10px;
+    }
+
+    .status {
+        margin: 10px 0;
+    }
+
+    .board {
+        margin: 10px 0;
+    }
+}
